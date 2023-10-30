@@ -11,59 +11,27 @@ type person struct {
 }
 
 func main() {
-	/*
-			p1 := person{
-				First: "Joe",
-			}
-
-			p2 := person{
-				First: "Peter",
-			}
-
-			xp := []person{p1, p2}
-
-			bs, err := json.Marshal(xp)
-
-			if err != nil {
-				log.Panic(err)
-
-			}
-			fmt.Println("Print JSON", string(bs))
-
-			xp2 := []person{}
-			err = json.Unmarshal(bs, &xp2)
-
-			if err != nil {
-				log.Panic(err)
-
-			}
-
-		fmt.Println("Convert back to Go structure", xp2)
-	*/
 
 	http.HandleFunc("/encode", foo)
-	http.HandleFunc("/decode", bar)
 	http.ListenAndServe(":8080", nil)
 
 }
 
 func foo(w http.ResponseWriter, r *http.Request) {
+
 	p1 := person{
-		First: "Joe",
+		First: "Jojo",
 	}
-	err := json.NewEncoder(w).Encode(p1)
+
+	p2 := person{
+		First: "Pam",
+	}
+
+	people := []person{p1, p2}
+
+	err := json.NewEncoder(w).Encode(people)
 	if err != nil {
-		log.Println("Encode bad data", err)
-	}
-}
-
-func bar(w http.ResponseWriter, r *http.Request) {
-	var p1 person
-	err := json.NewDecoder(r.Body).Decode(&p1)
-	if err != nil {
-		log.Println("Decode bad data", err)
-
+		log.Println("encode bad data", err)
 	}
 
-	log.Println("Person", p1)
 }
